@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { motion } from "framer-motion"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -35,7 +36,7 @@ export default function Header() {
     >
       <div className="container flex items-center justify-between">
         <Link href="/" className="text-xl font-bold tracking-tight hover:opacity-80 transition-opacity">
-          JD<span className="text-primary">.</span>
+          AM<span className="text-primary">.</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -65,20 +66,26 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-gray-950 shadow-md py-4">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.2 }}
+          className="md:hidden fixed top-[calc(var(--header-height,4rem))] left-0 w-full bg-white/95 dark:bg-gray-950/95 backdrop-blur-sm shadow-md py-4 z-40"
+        >
           <nav className="container flex flex-col space-y-4">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium hover:text-primary transition-colors py-2"
+                className="text-sm font-medium hover:text-primary transition-colors py-3 border-b border-gray-100 dark:border-gray-800 last:border-0"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.name}
               </Link>
             ))}
           </nav>
-        </div>
+        </motion.div>
       )}
     </header>
   )

@@ -1,179 +1,110 @@
 "use client"
 
-import type React from "react"
-
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, MapPin, Phone } from "lucide-react"
-import { useState } from "react"
+import { Mail, Phone, Github, Linkedin, ExternalLink } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function Contact() {
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    message: "",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormState((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setFormState({ name: "", email: "", message: "" })
-
-    // Reset success message after 5 seconds
-    setTimeout(() => setIsSubmitted(false), 5000)
-  }
-
   const contactInfo = [
     {
-      icon: <Mail className="h-5 w-5 text-primary" />,
+      icon: <Mail className="h-6 w-6 text-primary" />,
       title: "Email",
-      value: "hello@johndoe.dev",
-      href: "mailto:hello@johndoe.dev",
+      value: "adimukherjee100@gmail.com",
+      href: "mailto:adimukherjee100@gmail.com",
     },
     {
-      icon: <Phone className="h-5 w-5 text-primary" />,
+      icon: <Phone className="h-6 w-6 text-primary" />,
       title: "Phone",
-      value: "+1 (555) 123-4567",
-      href: "tel:+15551234567",
+      value: "+91 7003908040",
+      href: "tel:+917003908040",
     },
     {
-      icon: <MapPin className="h-5 w-5 text-primary" />,
-      title: "Location",
-      value: "San Francisco, CA",
-      href: null,
+      icon: <Github className="h-6 w-6 text-primary" />,
+      title: "GitHub",
+      value: "adimukh1234",
+      href: "https://github.com/adimukh1234",
+    },
+    {
+      icon: <Linkedin className="h-6 w-6 text-primary" />,
+      title: "LinkedIn",
+      value: "Aditya Mukherjee",
+      href: "https://www.linkedin.com/in/adityamukherjee100/",
     },
   ]
 
   return (
-    <section id="contact" className="py-20 md:py-32 bg-slate-50 dark:bg-slate-950/50">
-      <div className="container">
+    <section id="contact" className="py-24 md:py-32 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950/80 dark:to-slate-950/50">
+      <div className="container px-4 mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto text-center mb-16"
+          className="max-w-3xl mx-auto text-center mb-20"
         >
-          <h2 className="text-3xl font-bold tracking-tight mb-4">Get In Touch</h2>
+          <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+            Contact
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">Get In Touch</h2>
           <div className="h-1 w-20 bg-primary mx-auto mb-8"></div>
-          <p className="text-muted-foreground">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Have a project in mind or want to chat? Feel free to reach out. I'm always open to discussing new projects,
             creative ideas, or opportunities to be part of your vision.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="md:col-span-1 space-y-6"
-          >
-            {contactInfo.map((item, index) => (
-              <Card key={index}>
-                <CardContent className="flex items-center p-6">
-                  <div className="mr-4">{item.icon}</div>
-                  <div>
-                    <h3 className="font-medium">{item.title}</h3>
-                    {item.href ? (
-                      <a
-                        href={item.href}
-                        className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        {item.value}
-                      </a>
-                    ) : (
-                      <p className="text-sm text-muted-foreground">{item.value}</p>
-                    )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
+          {contactInfo.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+            >
+              <Card className="h-full overflow-hidden group hover:shadow-lg transition-all duration-300 border-primary/10 hover:border-primary/30">
+                <CardContent className="p-0">
+                  <div className="bg-primary/5 group-hover:bg-primary/10 transition-colors p-4 sm:p-6 flex items-center justify-center">
+                    <div className="bg-white dark:bg-slate-800 rounded-full p-3 sm:p-4 shadow-sm">
+                      {item.icon}
+                    </div>
+                  </div>
+                  <div className="p-4 sm:p-6 text-center">
+                    <h3 className="font-semibold text-base sm:text-lg mb-2">{item.title}</h3>
+                    <a
+                      href={item.href}
+                      className="text-sm text-muted-foreground group-hover:text-primary transition-colors flex items-center justify-center gap-2"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {item.value}
+                      <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="md:col-span-2"
-          >
-            <Card>
-              <CardContent className="p-6">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-sm font-medium">
-                        Name
-                      </label>
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder="Your name"
-                        required
-                        value={formState.name}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-medium">
-                        Email
-                      </label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="Your email"
-                        required
-                        value={formState.email}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-medium">
-                      Message
-                    </label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      placeholder="Your message"
-                      rows={5}
-                      required
-                      value={formState.message}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? "Sending..." : "Send Message"}
-                  </Button>
-                  {isSubmitted && (
-                    <p className="text-green-600 dark:text-green-400 text-center mt-4">
-                      Thank you! Your message has been sent successfully.
-                    </p>
-                  )}
-                </form>
-              </CardContent>
-            </Card>
-          </motion.div>
+            </motion.div>
+          ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-16 text-center"
+        >
+          <Button 
+            size="lg" 
+            className="rounded-full px-8 py-6 text-lg font-medium"
+            asChild
+          >
+            <a href="mailto:adimukherjee100@gmail.com">
+              Let's Work Together
+            </a>
+          </Button>
+        </motion.div>
       </div>
     </section>
   )

@@ -59,4 +59,18 @@
   html {
     @apply scroll-smooth;
   }
+  
+  /* Improve touch interactions */
+  a, button {
+    @apply tap-highlight-transparent touch-callout-none;
+  }
+  
+  /* Add this utility class */
+  .tap-highlight-transparent {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .touch-callout-none {
+    -webkit-touch-callout: none;
+  }
 }

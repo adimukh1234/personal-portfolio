@@ -1,30 +1,100 @@
-# Dev 
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/adimukh1234s-projects/v0-dev)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/XA2JSg5YAZJ)
 
-## Overview
+          
+# Portfolio Website
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+A modern, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS. Features a clean design with dark mode support, animations, and sections for showcasing projects and skills.
 
-## Deployment
+## Features
 
-Your project is live at:
+- 🌓 Dark/Light mode support
+- 🎨 Modern and clean design
+- 📱 Fully responsive
+- ⚡ Fast performance
+- 🔄 Smooth animations with Framer Motion
+- 🎯 SEO optimized
+- 🎨 Tailwind CSS styling
+- 🧩 Modular component architecture
 
-**[https://vercel.com/adimukh1234s-projects/v0-dev](https://vercel.com/adimukh1234s-projects/v0-dev)**
+## Tech Stack
 
-## Build your app
+- [Next.js](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Framer Motion](https://www.framer.com/motion/) - Animations
+- [Radix UI](https://www.radix-ui.com/) - UI components
+- [Lucide Icons](https://lucide.dev/) - Icons
 
-Continue building your app on:
+## Getting Started
 
-**[https://v0.dev/chat/projects/XA2JSg5YAZJ](https://v0.dev/chat/projects/XA2JSg5YAZJ)**
+### Prerequisites
 
-## How It Works
+- Node.js (v18 or higher)
+- pnpm (recommended) or npm
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+### Installation
+
+1. Clone the repository
+```bash
+git clone <your-repo-url>
+cd portfolio
+```
+
+2. Install dependencies
+```bash
+pnpm install
+```
+
+3. Run the development server
+```bash
+pnpm dev
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Build
+
+To create a production build:
+
+```bash
+pnpm build
+```
+
+To start the production server:
+
+```bash
+pnpm start
+```
+
+## Project Structure
+
+```
+├── app/                  # Next.js app directory
+├── components/          # React components
+│   ├── ui/             # Reusable UI components
+│   └── ...             # Feature components
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions
+├── public/             # Static assets
+└── styles/             # Global styles
+```
+
+## Customization
+
+1. Update personal information in `components/hero.tsx` and `components/about.tsx`
+2. Modify projects in `components/projects.tsx`
+3. Update contact information in `components/contact.tsx`
+4. Customize theme colors in `app/globals.css`
+
+## License
+
+This project is open source and available under the MIT License.
+
+## Author
+
+Aditya Mukherjee
+- GitHub: [@adimukh1234](https://github.com/adimukh1234)
+- LinkedIn: [Aditya Mukherjee](https://www.linkedin.com/in/adityamukherjee100/)
+
+        

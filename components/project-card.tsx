@@ -22,7 +22,7 @@ interface ProjectCardProps {
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-md">
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-40 sm:h-48 overflow-hidden">
         <Image
           src={project.image || "/placeholder.svg"}
           alt={project.title}
@@ -30,10 +30,10 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           className="object-cover transition-transform duration-500 hover:scale-105"
         />
       </div>
-      <CardContent className="flex-grow pt-6">
-        <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-        <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
-        <div className="flex flex-wrap gap-2 mt-auto">
+      <CardContent className="flex-grow pt-5 sm:pt-6 px-4 sm:px-6">
+        <h3 className="text-lg sm:text-xl font-bold mb-2">{project.title}</h3>
+        <p className="text-muted-foreground text-xs sm:text-sm mb-4">{project.description}</p>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-auto">
           {project.tags.map((tag) => (
             <Badge key={tag} variant="secondary" className="text-xs">
               {tag}
@@ -41,16 +41,16 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           ))}
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between pt-0">
-        <Button asChild variant="ghost" size="sm">
+      <CardFooter className="flex justify-between pt-0 px-4 sm:px-6 pb-4 sm:pb-6">
+        <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm">
           <Link href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="h-4 w-4 mr-2" />
+            <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
             Live Demo
           </Link>
         </Button>
-        <Button asChild variant="ghost" size="sm">
+        <Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm">
           <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-            <Github className="h-4 w-4 mr-2" />
+            <Github className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
             Code
           </Link>
         </Button>

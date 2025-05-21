@@ -5,56 +5,56 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="py-12 border-t">
-      <div className="container">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-6 md:mb-0">
+    <footer className="py-8 sm:py-12 border-t">
+      <div className="container px-4">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="mb-6 md:mb-0 text-center md:text-left">
             <Link href="/" className="text-xl font-bold">
-              JD<span className="text-primary">.</span>
+              AM<span className="text-primary">.</span>
             </Link>
-            <p className="text-sm text-muted-foreground mt-2">Building clean code & delightful digital experiences.</p>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-2">Building clean code & delightful digital experiences.</p>
           </div>
 
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-4 sm:space-x-6">
             <Link
-              href="https://github.com"
+              href="https://github.com/adimukh1234"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              <Github className="h-5 w-5" />
+              <Github className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
             <Link
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/adityamukherjee100/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              <Linkedin className="h-5 w-5" />
+              <Linkedin className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
             <Link
-              href="https://twitter.com"
+              href="https://x.com/adityamukh19"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Twitter"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              <Twitter className="h-5 w-5" />
+              <Twitter className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
             <Link
-              href="mailto:hello@johndoe.dev"
+              href="mailto:adimukherjee100@gmail.com"
               aria-label="Email"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              <Mail className="h-5 w-5" />
+              <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-          <p>© {currentYear} John Doe. All rights reserved.</p>
+        <div className="text-center text-xs sm:text-sm text-muted-foreground mt-6">
+          © {currentYear} Aditya Mukherjee. All rights reserved.
         </div>
       </div>
     </footer>

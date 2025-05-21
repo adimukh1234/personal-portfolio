@@ -8,23 +8,22 @@ import type { Metadata } from "next"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "John Doe | Frontend Developer",
-  description: "Portfolio of John Doe, a frontend developer specializing in React and Next.js",
+  title: "Aditya Mukherjee | Software Developer and Student",
+  description: "Portfolio of Aditya Mukherjee, a full stack developer specializing in MERN and Next.js",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://johndoe.dev",
-    title: "John Doe | Frontend Developer",
-    description: "Portfolio of John Doe, a frontend developer specializing in React and Next.js",
+    title: "Aditya Mukherjee | Full Stack Developer",
+    description: "Portfolio of Aditya Mukherjee, a full stack developer specializing in MERN and Next.js",
     siteName: "John Doe Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "John Doe | Frontend Developer",
-    description: "Portfolio of John Doe, a frontend developer specializing in React and Next.js",
-    creator: "@johndoe",
+    title: "Aditya Mukherjee | Full Stack Developer",
+    description: "Portfolio of Aditya Mukherjee, a full stack developer specializing in MERN and Next.js",
+    creator: "@AdityaMukh19",
   },
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -34,6 +33,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+      </head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Header />

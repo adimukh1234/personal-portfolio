@@ -11,13 +11,14 @@ export default function About() {
     "React",
     "Next.js",
     "Node.js",
+    "MongoDB",
+    "Python",
+    "Express",
     "TailwindCSS",
     "HTML/CSS",
     "Git",
-    "Figma",
     "REST API",
-    "GraphQL",
-    "Jest",
+
   ]
 
   const container = {
@@ -59,8 +60,8 @@ export default function About() {
           >
             <div className="aspect-square relative rounded-2xl overflow-hidden">
               <Image
-                src="/placeholder.svg?height=600&width=600"
-                alt="John Doe"
+                src="/IMG_3683.jpg?height=600&width=600"
+                alt="Aditya Mukherjee"
                 width={600}
                 height={600}
                 className="object-cover"
@@ -76,10 +77,11 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <h3 className="text-2xl font-bold mb-4">Frontend Developer & UI/UX Enthusiast</h3>
+            <h3 className="text-2xl font-bold mb-4">Building Fast, Scalable, and Thoughtful Web Experiences</h3>
             <p className="text-muted-foreground mb-6">
-              I'm a passionate frontend developer with 5+ years of experience creating responsive, user-friendly web
-              applications. I specialize in React and Next.js, with a strong focus on performance and accessibility.
+            I’m an engineering student building fast, clean, and user-first web apps with Next.js and the MERN stack. I focus on creating modern digital products that blend performance, design, and real-world utility.
+
+From AI tools to Gen-Z-centric SaaS ideas, I want to build in public, ship fast, and learn out loud — always pushing for sharper UI and smarter UX.
             </p>
             <p className="text-muted-foreground mb-8">
               My approach combines clean code with thoughtful design to deliver exceptional user experiences. I'm

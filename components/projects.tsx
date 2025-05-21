@@ -7,60 +7,25 @@ export default function Projects() {
   const projects = [
     {
       id: 1,
-      title: "E-commerce Platform",
+      title: "Workout & Diet Generation through AI voice assistance",
       description:
-        "A full-featured e-commerce platform with product listings, cart functionality, and secure checkout.",
-      image: "/placeholder.svg?height=400&width=600",
-      tags: ["Next.js", "TypeScript", "Stripe", "Tailwind CSS"],
-      demoUrl: "https://example.com",
-      githubUrl: "https://github.com",
+        "A workout and diet generation application that uses AI voice assistance to provide personalized workout plans and meal recommendations.",
+      image: "/code-flex.png?height=400&width=600",
+      tags: ["Next.js", "TypeScript", "Convex","Clerk", "Tailwind CSS"],
+      demoUrl: "https://code-flex-ai-seven.vercel.app/",
+      githubUrl: "https://github.com/adimukh1234/code-flex",
     },
     {
       id: 2,
-      title: "Task Management App",
+      title: "Functional NGO Website",
       description:
-        "A productivity app for managing tasks with drag-and-drop functionality and team collaboration features.",
-      image: "/placeholder.svg?height=400&width=600",
-      tags: ["React", "Redux", "Firebase", "Styled Components"],
-      demoUrl: "https://example.com",
-      githubUrl: "https://github.com",
-    },
-    {
-      id: 3,
-      title: "Weather Dashboard",
-      description: "A weather application that provides real-time forecasts, historical data, and interactive maps.",
-      image: "/placeholder.svg?height=400&width=600",
-      tags: ["React", "Chart.js", "Weather API", "CSS Modules"],
-      demoUrl: "https://example.com",
-      githubUrl: "https://github.com",
-    },
-    {
-      id: 4,
-      title: "Portfolio Website",
-      description: "A minimalist portfolio website template for developers and designers to showcase their work.",
-      image: "/placeholder.svg?height=400&width=600",
-      tags: ["Next.js", "Framer Motion", "Tailwind CSS", "Vercel"],
-      demoUrl: "https://example.com",
-      githubUrl: "https://github.com",
-    },
-    {
-      id: 5,
-      title: "Recipe Finder",
-      description: "A recipe discovery app that allows users to search for recipes based on ingredients they have.",
-      image: "/placeholder.svg?height=400&width=600",
-      tags: ["React", "Context API", "Food API", "CSS Grid"],
-      demoUrl: "https://example.com",
-      githubUrl: "https://github.com",
-    },
-    {
-      id: 6,
-      title: "Fitness Tracker",
-      description: "A fitness application for tracking workouts, setting goals, and monitoring progress over time.",
-      image: "/placeholder.svg?height=400&width=600",
-      tags: ["React Native", "TypeScript", "Firebase", "Expo"],
-      demoUrl: "https://example.com",
-      githubUrl: "https://github.com",
-    },
+        "A functional NGO website that provides information about the organization's mission, vision, and services.",
+      image: "/soranova.png?height=400&width=600",
+      tags: ["React", "Next", "Styled Components"],
+      demoUrl: "https://ngo-website-rust-omega.vercel.app/",
+      githubUrl: "https://github.com/adimukh1234/soranova-glow-web",
+    }
+    
   ]
 
   return (
@@ -77,7 +42,7 @@ export default function Projects() {
           <div className="h-1 w-20 bg-primary mx-auto mb-8"></div>
           <p className="text-muted-foreground">
             Here are some of my recent projects. Each one was built with a focus on solving real problems with clean,
-            efficient code and delightful user experiences.
+            efficient code, efficient use of AI tools and delightful user experiences.
           </p>
         </motion.div>
 

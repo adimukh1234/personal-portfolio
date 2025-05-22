@@ -60,7 +60,7 @@ export default function About() {
           >
             <div className="aspect-square relative rounded-2xl overflow-hidden">
               <Image
-                src="/IMG_3683.jpg?height=600&width=600"
+                src="/adi.JPG?height=600&width=600"
                 alt="Aditya Mukherjee"
                 width={600}
                 height={600}

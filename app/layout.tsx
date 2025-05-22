@@ -13,10 +13,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://johndoe.dev",
+    url: "https://personal-portfolio-phi-self.vercel.app/",
     title: "Aditya Mukherjee | Full Stack Developer",
     description: "Portfolio of Aditya Mukherjee, a full stack developer specializing in MERN and Next.js",
-    siteName: "John Doe Portfolio",
+    siteName: "Aditya Mukherjee Portfolio",
   },
   twitter: {
     card: "summary_large_image",

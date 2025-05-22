@@ -60,7 +60,7 @@
     @apply scroll-smooth;
   }
   
-  /* Improve touch interactions */
+
   a, button {
     @apply tap-highlight-transparent touch-callout-none;
   }

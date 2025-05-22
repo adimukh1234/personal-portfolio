@@ -23,12 +23,9 @@ export default function Experience() {
       location: "Kolkata, India",
       period: "May 2025 - Present",
       description: [
-        "Led the development of responsive web applications using React and Next.js",
-        "Implemented state management solutions with Redux and Context API",
-        "Collaborated with UX/UI designers to implement pixel-perfect designs",
-        "Mentored junior developers and conducted code reviews",
+        "Exploring web technologies and frameworks",
       ],
-      skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux"],
+      skills: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
       current: true,
     },
     {

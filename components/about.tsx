@@ -16,8 +16,7 @@ export default function About() {
     "Express",
     "TailwindCSS",
     "HTML/CSS",
-    "Git",
-    "REST API",
+    "Git"
 
   ]
 

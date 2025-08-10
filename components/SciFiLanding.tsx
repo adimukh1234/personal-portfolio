@@ -56,6 +56,8 @@ export default function SciFiLanding() {
   const smoothBeatRef = useRef(0);
   const wavePhaseRef = useRef(0);
   const waveRAFRef = useRef<number | null>(null);
+  const navRef = useRef<HTMLDivElement | null>(null);
+  const [audioBtnOffset, setAudioBtnOffset] = useState(120); // px from bottom on mobile
 
   // Handle audio level changes from spectrum analyzer
   const handleAudioLevelChange = (level: number) => {
@@ -199,6 +201,21 @@ export default function SciFiLanding() {
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
   }, []);
+
+  // Recompute audio button offset when layout changes (mobile)
+  useEffect(() => {
+    if (!isSmall) return;
+    const compute = () => {
+      if (navRef.current) {
+        const h = navRef.current.offsetHeight; // nav height
+        setAudioBtnOffset(h + 32); // add gap below audio button
+      }
+    };
+    compute();
+    window.addEventListener('resize', compute);
+    const id = setInterval(compute, 600); // fallback to catch font load / dynamic changes
+    return () => { window.removeEventListener('resize', compute); clearInterval(id); };
+  }, [isSmall]);
 
   // Dynamically reduce complexity on very small screens
   useEffect(() => {
@@ -426,7 +443,8 @@ export default function SciFiLanding() {
         <button
           onClick={toggleMobileAudio}
           aria-label={isMobilePlaying ? 'Pause audio' : 'Play audio'}
-          className={`fixed bottom-24 right-4 z-50 pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-full bg-[rgba(0,0,0,0.7)] border border-[rgba(255,78,66,0.6)] font-mono text-xs tracking-wide shadow-lg shadow-[rgba(255,78,66,0.2)] active:scale-95 transition ${isMobilePlaying ? 'text-[#ffffff]' : 'text-[#ff4e42]'}`}
+          style={{ bottom: audioBtnOffset, right: 16 }}
+          className={`fixed z-50 pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-full bg-[rgba(0,0,0,0.7)] border border-[rgba(255,78,66,0.6)] font-mono text-xs tracking-wide shadow-lg shadow-[rgba(255,78,66,0.2)] active:scale-95 transition ${isMobilePlaying ? 'text-[#ffffff]' : 'text-[#ff4e42]'}`}
         >
           <span className="relative flex items-center gap-2">
             <span className="font-semibold">AUDIO</span>
@@ -489,7 +507,7 @@ export default function SciFiLanding() {
       )}
 
       {/* Portfolio Navigation - responsive */}
-      <div className="fixed bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 opacity-85 hover:opacity-100 transition-all duration-300 hover:scale-105 z-50 pointer-events-auto w-[min(92%,480px)]">
+  <div ref={navRef} className="fixed bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 opacity-85 hover:opacity-100 transition-all duration-300 hover:scale-105 z-40 pointer-events-auto w-[min(92%,480px)]">
         <div className="bg-[rgba(0,0,0,0.75)] border border-[rgba(255,78,66,0.5)] sm:border-2 px-4 py-3 sm:px-8 sm:py-4 rounded-lg backdrop-blur-md shadow-lg shadow-[rgba(255,78,66,0.15)]">
           <div className="text-[#ff4e42] font-bold uppercase tracking-wide text-center text-[clamp(0.7rem,2.2vw,0.95rem)] sm:text-base">
             ADITYA MUKHERJEE • FULL STACK / ML ENTHUSIAST

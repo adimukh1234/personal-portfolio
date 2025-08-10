@@ -274,15 +274,15 @@ export default function BentoGrid() {
         <div className="profile-container">
           <div className="profile-image-wrapper">
             <Image 
-              src="/adi.JPG" 
-              alt="Adi - Full-Stack Developer" 
+              src="https://res.cloudinary.com/dbpvl1rnb/image/upload/v1754827587/WhatsApp_Image_2025-08-10_at_17.36.09_f30b71a6_xzjgsy.jpg" 
+              alt="Aditya Mukherjee - Full-Stack Developer"
               width={300}
               height={400}
               className="profile-image"
             />
             <div className="profile-overlay">
               <div className="overlay-content">
-                <h4>Adi Mulay</h4>
+                <h4>Aditya Mukherjee</h4>
                 <p>Full-Stack Developer</p>
               </div>
             </div>

@@ -2,7 +2,8 @@ import type React from "react"
 import "@/app/globals.css"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
-import Header from "@/components/header"
+import { SciFiNavbarWrapper } from "@/components/SciFiNavbarWrapper"
+import Footer from "@/components/footer"
 import type { Metadata } from "next"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -32,14 +33,24 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
       </head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <Header />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange forcedTheme="dark">
+          {/* Global Sci-Fi Navbar */}
+          <div className="fixed top-5 left-5 right-5 z-50 pointer-events-none">
+            <div className="pointer-events-auto">
+              <SciFiNavbarWrapper />
+            </div>
+          </div>
+          
+          {/* Main Content */}
           {children}
+          
+          {/* Global Footer */}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

@@ -225,17 +225,10 @@ export function SpectrumAnalyzer({
   };
 
   return (
-    <div className="fixed bottom-5 right-5 w-[400px] bg-[rgba(30,26,24,0.7)] border border-[rgba(255,78,66,0.3)] rounded-md overflow-hidden pointer-events-auto z-20">
+    <div className="fixed bottom-5 right-5 w-[400px] bg-[rgba(30,26,24,0.7)] border border-[rgba(255,78,66,0.3)] rounded-md overflow-hidden pointer-events-auto z-20 select-none">
       {/* Header */}
       <div className="flex justify-between items-center px-3 py-2 bg-[rgba(0,0,0,0.3)] text-sm text-[#ff4e42]">
         <span>AUDIO SPECTRUM ANALYZER</span>
-        <div className="flex items-center gap-2">
-          {/* Beat Indicator */}
-          <div className={`w-3 h-3 rounded-full transition-all duration-100 ${
-            beatDetected ? 'bg-[#ff4e42] shadow-lg shadow-[#ff4e42]/50' : 'bg-[rgba(255,78,66,0.2)]'
-          }`}></div>
-          <span className="cursor-move">⋮⋮</span>
-        </div>
       </div>
 
       {/* Spectrum Canvas */}

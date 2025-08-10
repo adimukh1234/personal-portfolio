@@ -1,16 +1,17 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Text } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { Draggable } from 'gsap/Draggable';
-import { SciFiAnomaly } from './SciFiAnomaly';
-import { AudioSystem } from './AudioSystem';
-import { SpectrumAnalyzer } from './SpectrumAnalyzer';
-import { LoadingOverlay } from './LoadingOverlay';
-import { FloatingParticles } from './FloatingParticles';
+// Lazy loaded heavy visual / audio components (no SSR needed for WebGL)
+const SciFiAnomaly = dynamic(() => import('./SciFiAnomaly').then(m => m.SciFiAnomaly), { ssr: false });
+const SpectrumAnalyzer = dynamic(() => import('./SpectrumAnalyzer').then(m => m.SpectrumAnalyzer), { ssr: false, loading: () => null });
+const LoadingOverlay = dynamic(() => import('./LoadingOverlay').then(m => m.LoadingOverlay), { ssr: false });
+const FloatingParticles = dynamic(() => import('./FloatingParticles').then(m => m.FloatingParticles), { ssr: false, loading: () => null });
 import { useAudio } from './AudioContext';
 
 // Register GSAP plugins
@@ -62,13 +63,14 @@ export default function SciFiLanding() {
     setGlobalAudioLevel(level);
   };
 
-  // Handle beat detection from spectrum analyzer
+  // Beat detection with smooth decay handled by RAF loop (avoid multiple timeouts)
+  const lastBeatRef = useRef(0);
+  const beatPeakRef = useRef(0);
   const handleBeatDetected = (intensity: number) => {
-    setBeatIntensity(intensity);
+    beatPeakRef.current = Math.max(beatPeakRef.current * 0.5, intensity);
+    lastBeatRef.current = performance.now();
+    setBeatIntensity(intensity); // immediate UI reaction
     setGlobalBeatIntensity(intensity);
-    // Decay the beat intensity over time
-    setTimeout(() => setBeatIntensity(intensity * 0.5), 50);
-    setTimeout(() => setBeatIntensity(0), 100);
   };
 
   // Initialize audio context
@@ -76,7 +78,8 @@ export default function SciFiLanding() {
     try {
       const context = new (window.AudioContext || (window as any).webkitAudioContext)();
       const analyser = context.createAnalyser();
-      analyser.fftSize = 2048;
+      // Lower FFT size on small / low-power devices for performance
+      analyser.fftSize = window.innerWidth < 640 ? 1024 : 2048;
       analyser.smoothingTimeConstant = 0.8;
       analyser.connect(context.destination);
       
@@ -118,8 +121,7 @@ export default function SciFiLanding() {
     const timer = setTimeout(() => {
       setIsLoaded(true);
       initAudio();
-    }, 3000);
-
+    }, 1500); // shorter splash for faster TTI
     return () => clearTimeout(timer);
   }, []);
 
@@ -276,23 +278,28 @@ export default function SciFiLanding() {
   }, [isSmall, audioAnalyser]);
 
   useEffect(() => {
-    // Smoother circle visualiser animation loop (independent from React re-render)
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return; // respect user preference
+    let lastTime = performance.now();
     const animate = () => {
-      const targetL = audioLevel;
-      const targetB = beatIntensity;
-      // Frame-rate independent exponential smoothing
       const now = performance.now();
-      // Assume ~60fps delta approximation for smoothing factor using small constants
-      smoothLevelRef.current += (targetL - smoothLevelRef.current) * 0.12;
-      smoothBeatRef.current += (targetB - smoothBeatRef.current) * 0.18;
+      const dt = Math.min(100, now - lastTime);
+      lastTime = now;
+      // Smooth incoming audio / beat state (read latest state values)
+      smoothLevelRef.current += (audioLevel - smoothLevelRef.current) * 0.12;
+      // Beat decay using time-based approach
+      const beatElapsed = now - lastBeatRef.current;
+      const targetBeat = beatElapsed < 400 ? beatPeakRef.current * (1 - beatElapsed / 400) : 0;
+      smoothBeatRef.current += (targetBeat - smoothBeatRef.current) * 0.2;
+      if (smoothBeatRef.current < 0.002) {
+        smoothBeatRef.current = 0;
+        if (beatIntensity !== 0) setBeatIntensity(0);
+      }
       wavePhaseRef.current += 0.02 + smoothLevelRef.current * 0.05 + smoothBeatRef.current * 0.08;
 
-      const baseSize = isSmall ? 340 : 500; // logical base diameter used for shadow strength
       const composite = smoothLevelRef.current * 0.6 + smoothBeatRef.current * 0.9;
-      const pulse = Math.sin(wavePhaseRef.current) * 0.04; // subtle breathing
-      const coreScale = 1 + composite * 0.55 + pulse; // core circle scale
-
-      const glowAlpha = 0.12 + composite * 0.35;
+      const pulse = Math.sin(wavePhaseRef.current) * 0.04;
+      const coreScale = 1 + composite * 0.55 + pulse;
       const glowRadius = 18 + composite * 60;
 
       if (waveCoreRef.current) {
@@ -302,12 +309,11 @@ export default function SciFiLanding() {
         waveCoreRef.current.style.opacity = (0.85 + smoothLevelRef.current * 0.15).toString();
       }
 
-      // Layered rings (outer -> inner) for traveling wave feel
       const ringScales = [1.6, 1.3, 1.05];
       const ringRefs = [ringOuterRef, ringMidRef, ringInnerRef];
       ringRefs.forEach((ref, idx) => {
         const phaseOffset = wavePhaseRef.current - idx * 0.4;
-        const ringPulse = Math.sin(phaseOffset) * 0.5 + 0.5; // 0..1
+        const ringPulse = Math.sin(phaseOffset) * 0.5 + 0.5;
         const dynamicScale = 1 + (smoothBeatRef.current * 0.35 + smoothLevelRef.current * 0.15) * (1 - idx * 0.25) + ringPulse * 0.04;
         const scale = ringScales[idx] * dynamicScale;
         const op = 0.18 - idx * 0.04 + composite * (0.15 - idx * 0.03);
@@ -323,7 +329,8 @@ export default function SciFiLanding() {
     };
     waveRAFRef.current = requestAnimationFrame(animate);
     return () => { if (waveRAFRef.current) cancelAnimationFrame(waveRAFRef.current); };
-  }, [audioLevel, beatIntensity, isSmall]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioLevel]); // keep audioLevel to ensure start after first data; beat handled via refs
 
   return (
     <div 

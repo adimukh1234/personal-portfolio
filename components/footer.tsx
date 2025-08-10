@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { Github, Linkedin, Mail, Twitter, Terminal } from "lucide-react"
+import { Mail, Terminal } from "lucide-react"
+import { SocialLinks } from "./SocialLinks"
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -28,33 +29,7 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center space-x-4 sm:space-x-6">
-            <Link
-              href="https://github.com/adimukh1234"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="text-[#c2b8b2] hover:text-[#ff4e42] transition-colors"
-            >
-              <Github className="h-4 w-4 sm:h-5 sm:w-5" />
-            </Link>
-            <Link
-              href="https://www.linkedin.com/in/adityamukherjee100/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="text-[#c2b8b2] hover:text-[#ff4e42] transition-colors"
-            >
-              <Linkedin className="h-4 w-4 sm:h-5 sm:w-5" />
-            </Link>
-            <Link
-              href="https://x.com/adityamukh19"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter"
-              className="text-[#c2b8b2] hover:text-[#ff4e42] transition-colors"
-            >
-              <Twitter className="h-4 w-4 sm:h-5 sm:w-5" />
-            </Link>
+            <SocialLinks />
             <Link
               href="mailto:adimukherjee100@gmail.com"
               aria-label="Email"

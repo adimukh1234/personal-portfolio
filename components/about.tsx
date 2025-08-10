@@ -6,20 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { User, Code, Database, Globe } from "lucide-react"
 
 export default function About() {
-  const skills = [
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "Next.js",
-    "Node.js",
-    "MongoDB",
-    "Python",
-    "Express",
-    "TailwindCSS",
-    "HTML/CSS",
-    "Git"
-
-  ]
+  
 
   const container = {
     hidden: { opacity: 0 },
@@ -37,7 +24,10 @@ export default function About() {
   }
 
   return (
-    <section id="about" className="py-20 md:py-32 bg-[#12100f] text-[#ffffff] relative overflow-hidden">
+    <section
+      id="about"
+      className="relative py-20 sm:py-24 md:py-28 max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 bg-[#12100f] text-[#ffffff] overflow-hidden"
+    >
       {/* Grid Overlay */}
       <div className="absolute inset-0 opacity-5"
            style={{
@@ -68,69 +58,54 @@ export default function About() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold tracking-tight mb-4 uppercase font-mono text-[#ff4e42]">
+          <h2 className="text-[#ff4e42] font-mono font-bold uppercase tracking-tight text-[clamp(1.75rem,4vw,2.5rem)] mb-6">
             SYSTEM PROFILE
           </h2>
           <div className="h-px w-20 bg-[#ff4e42] mx-auto mb-8"></div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="relative"
-          >
-            <div className="aspect-square relative rounded-2xl overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="order-2 lg:order-1">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="relative"
+            >
+              
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <p className="text-[clamp(0.95rem,1.9vw,1.05rem)] leading-relaxed text-[#c2b8b2] mb-5">
+                I architect and build modern, performant web experiences with a focus on scalability, accessibility, and delightful interactions.
+              </p>
+              <p className="text-[clamp(0.95rem,1.85vw,1.05rem)] leading-relaxed text-[#c2b8b2] mb-5">
+                From interactive 3D visualizations to robust backend integrations, I love solving complex problems and refining the details that elevate a product.
+              </p>
+              <p className="text-[clamp(0.95rem,1.75vw,1.05rem)] leading-relaxed text-[#c2b8b2]">
+                Current Focus: advancing real-time systems, AI-assisted developer tooling, and immersive interfaces.
+              </p>
+            </motion.div>
+          </div>
+          <div className="relative max-w-sm w-full mx-auto order-1 lg:order-2">
+            <div className="aspect-square rounded-xl overflow-hidden border border-[#312b29]/60 bg-[#141212]">
               <Image
-                src="/adi.JPG?height=600&width=600"
-                alt="Aditya Mukherjee"
-                width={600}
-                height={600}
-                className="object-cover"
-                priority
+                src= "https://res.cloudinary.com/dbpvl1rnb/image/upload/f_auto,q_auto,w_900/v1754820795/adi_o8tjaw.jpg"
+                alt="Profile"
+                fill
+                priority={false}
+                sizes="(max-width:480px) 85vw, (max-width:768px) 70vw, (max-width:1024px) 48vw, (max-width:1400px) 420px, 480px"
+                className="object-cover object-center transition-transform duration-700 ease-[cubic-bezier(.4,.25,.3,1)] hover:scale-[1.06] will-change-transform"
               />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(255,78,66,0.18),transparent_60%)]" />
             </div>
-            <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-primary/10 rounded-full -z-10"></div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h3 className="text-2xl font-bold mb-4">Building Fast, Scalable, and Thoughtful Web Experiences</h3>
-            <p className="text-muted-foreground mb-6">
-            I’m an engineering student building fast, clean, and user-first web apps with Next.js and the MERN stack. I focus on creating modern digital products that blend performance, design, and real-world utility.
-
-From AI tools to Gen-Z-centric SaaS ideas, I want to build in public, ship fast, and learn out loud — always pushing for sharper UI and smarter UX.
-            </p>
-            <p className="text-muted-foreground mb-8">
-              My approach combines clean code with thoughtful design to deliver exceptional user experiences. I'm
-              constantly learning and exploring new technologies to stay at the forefront of web development.
-            </p>
-
-            <div>
-              <h4 className="font-medium mb-4">My Tech Stack & Tools</h4>
-              <motion.div
-                variants={container}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                className="flex flex-wrap gap-2"
-              >
-                {skills.map((skill) => (
-                  <motion.div key={skill} variants={item}>
-                    <Badge variant="secondary" className="px-3 py-1 text-sm">
-                      {skill}
-                    </Badge>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

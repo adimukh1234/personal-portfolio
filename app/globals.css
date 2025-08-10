@@ -55,6 +55,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    cursor: default;
   }
   html {
     @apply scroll-smooth;
@@ -965,4 +966,37 @@ html {
     flex-direction: column;
     gap: 0.5rem;
   }
+}
+
+/* Custom Cursor Styles */
+/* Removed global custom cursor hiding rules */
+/* If you need to hide the cursor for a specific element later, add class .cursor-none manually instead of forcing globally */
+
+/* Custom cursor animations */
+@keyframes cursor-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes cursor-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px hsl(217.2 91.2% 59.8%);
+  }
+  50% {
+    box-shadow: 0 0 16px hsl(217.2 91.2% 59.8%), 0 0 24px hsl(217.2 91.2% 59.8%);
+  }
+}
+
+.cursor-animate-pulse {
+  animation: cursor-pulse 2s ease-in-out infinite;
+}
+
+.cursor-animate-glow {
+  animation: cursor-glow 1.5s ease-in-out infinite;
 }

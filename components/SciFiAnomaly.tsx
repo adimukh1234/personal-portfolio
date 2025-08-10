@@ -24,6 +24,10 @@ export function SciFiAnomaly({
   const meshRef = useRef<THREE.Mesh>(null);
   const glowRef = useRef<THREE.Mesh>(null);
   const clockRef = useRef(0);
+  const smoothedLevelRef = useRef(0);
+  const smoothedBeatRef = useRef(0);
+  const beatPhaseRef = useRef(0);
+  const lastLevelRef = useRef(0);
 
   // Create geometry based on resolution
   const geometry = useMemo(() => {
@@ -38,16 +42,22 @@ export function SciFiAnomaly({
         color: { value: new THREE.Color(0xff4e42) },
         audioLevel: { value: 0 },
         beatIntensity: { value: 0 },
+        smoothedLevel: { value: 0 },
+        smoothedBeat: { value: 0 },
+        beatPhase: { value: 0 },
         distortion: { value: distortion }
       },
       vertexShader: `
-        uniform float time;
-        uniform float audioLevel;
-        uniform float beatIntensity;
+        uniform float time;        
+        uniform float audioLevel;  
+        uniform float beatIntensity; 
+        uniform float smoothedLevel; 
+        uniform float smoothedBeat; 
+        uniform float beatPhase; 
         uniform float distortion;
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        varying float vBeatEffect;
+        varying vec3 vNormal; 
+        varying vec3 vPosition; 
+        varying float vBeatEffect; 
         
         // Simplex noise function
         vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -115,59 +125,48 @@ export function SciFiAnomaly({
           return 42.0 * dot(m*m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
         }
         
-        void main() {
+        void main(){
           vNormal = normalize(normalMatrix * normal);
-          
-          float slowTime = time * 0.3;
-          vec3 pos = position;
-          
-          // Enhanced beat reaction
-          float beatEffect = beatIntensity * 2.0;
-          vBeatEffect = beatEffect;
-          
-          // Noise displacement with beat amplification
-          float noise = snoise(vec3(position.x * 0.5, position.y * 0.5, position.z * 0.5 + slowTime));
-          float beatNoise = snoise(vec3(position.x * 2.0, position.y * 2.0, position.z * 2.0 + time * 2.0)) * beatEffect;
-          
-          // Combine audio and beat effects
-          float totalDisplacement = noise * 0.2 * distortion * (1.0 + audioLevel) + beatNoise * 0.3;
-          pos += normal * totalDisplacement;
-          
-          // Scale the entire mesh on beats
-          pos *= (1.0 + beatEffect * 0.15);
-          
-          vPosition = pos;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+          vec3 basePos = position;
+          float r = length(basePos);
+          float t = time * 0.6;
+          // Multi-octave noise (fbm)
+          float n1 = snoise(basePos * 0.6 + vec3(0.0,0.0,t));
+            float n2 = snoise(basePos * 1.2 + vec3(0.0,0.0,t*1.3));
+            float n3 = snoise(basePos * 2.1 + vec3(0.0,0.0,t*1.7));
+          float fbm = (n1*0.55 + n2*0.3 + n3*0.15);
+          // Radial traveling wave synced with beat phase
+          float wave = sin(r*3.5 - beatPhase*2.2) * smoothedBeat * 0.28;
+          float subtleWave = sin(r*7.0 + t*1.2) * smoothedLevel * 0.08;
+          float displacement = (fbm * 0.35 * distortion * (1.0 + smoothedLevel*0.9)) + wave + subtleWave;
+          // Gentle breathing independent of beats
+          displacement += 0.05 * sin(t*0.8) * (0.5 + smoothedLevel*0.5);
+          vec3 displaced = basePos + normalize(basePos) * displacement;
+          // Beat pulse scale (smoothed)
+          float beatScale = 1.0 + smoothedBeat * 0.22;
+          displaced *= beatScale;
+          vBeatEffect = smoothedBeat;
+          vPosition = displaced;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced,1.0);
         }
       `,
       fragmentShader: `
-        uniform float time;
-        uniform vec3 color;
-        uniform float audioLevel;
-        uniform float beatIntensity;
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        varying float vBeatEffect;
-        
-        void main() {
-          vec3 viewDirection = normalize(cameraPosition - vPosition);
-          float fresnel = 1.0 - max(0.0, dot(viewDirection, vNormal));
-          fresnel = pow(fresnel, 2.0 + audioLevel * 2.0);
-          
-          float pulse = 0.8 + 0.2 * sin(time * 2.0);
-          
-          // Enhanced beat color effects
-          vec3 beatColor = vec3(1.0, 0.5, 0.2); // Orange flash for beats
-          vec3 baseColor = color;
-          
-          // Mix beat color based on beat intensity
-          vec3 mixedColor = mix(baseColor, beatColor, vBeatEffect * 0.7);
-          
-          vec3 finalColor = mixedColor * fresnel * pulse * (1.0 + audioLevel * 0.8 + vBeatEffect * 1.5);
-          
-          float alpha = fresnel * (0.7 - audioLevel * 0.3 + vBeatEffect * 0.3);
-          
-          gl_FragColor = vec4(finalColor, alpha);
+        uniform float time; 
+        uniform vec3 color; 
+        uniform float smoothedLevel; 
+        uniform float smoothedBeat; 
+        varying vec3 vNormal; 
+        varying vec3 vPosition; 
+        varying float vBeatEffect; 
+        void main(){
+          vec3 V = normalize(cameraPosition - vPosition);
+          float fres = 1.0 - max(0.0, dot(V, normalize(vNormal)));
+          fres = pow(fres, 2.2 + smoothedLevel*2.5);
+          float wavePulse = 0.6 + 0.4 * sin(time*1.6 + smoothedBeat*3.0);
+          vec3 beatCol = mix(color, vec3(1.0,0.75,0.4), smoothedBeat*0.65);
+          vec3 finalCol = beatCol * fres * wavePulse * (1.0 + smoothedLevel*0.9 + smoothedBeat*1.3);
+          float alpha = fres * (0.55 + smoothedBeat*0.25) * (1.0 - smoothedLevel*0.15);
+          gl_FragColor = vec4(finalCol, alpha);
         }
       `,
       wireframe: true,
@@ -234,33 +233,47 @@ export function SciFiAnomaly({
   // Animation loop
   useFrame((state, delta) => {
     clockRef.current += delta;
-    
+    // Exponential smoothing factors
+    const levelTarget = audioLevel;
+    const beatTarget = beatIntensity;
+    const levelSmoothFactor = 1.0 - Math.pow(0.001, delta); // frame-rate independent
+    const beatSmoothFactor = 1.0 - Math.pow(0.0005, delta);
+    smoothedLevelRef.current += (levelTarget - smoothedLevelRef.current) * levelSmoothFactor;
+    smoothedBeatRef.current += (beatTarget - smoothedBeatRef.current) * beatSmoothFactor;
+    // Beat phase advances faster on stronger beats creating traveling waves
+    beatPhaseRef.current += delta * (0.6 + smoothedBeatRef.current * 3.5);
+
     if (meshRef.current && material.uniforms) {
       material.uniforms.time.value = clockRef.current;
       material.uniforms.audioLevel.value = audioLevel;
       material.uniforms.beatIntensity.value = beatIntensity;
+      material.uniforms.smoothedLevel.value = smoothedLevelRef.current;
+      material.uniforms.smoothedBeat.value = smoothedBeatRef.current;
+      material.uniforms.beatPhase.value = beatPhaseRef.current;
       material.uniforms.distortion.value = distortion;
-      
-      // Enhanced rotation with beat reactivity
-      const audioRotationFactor = 1 + audioLevel * audioReactivity;
-      const beatRotationBoost = 1 + beatIntensity * 3; // Strong beat rotation
-      
-      meshRef.current.rotation.y += 0.005 * rotationSpeed * audioRotationFactor * beatRotationBoost;
-      meshRef.current.rotation.z += 0.002 * rotationSpeed * audioRotationFactor * beatRotationBoost;
-      
-      // Scale mesh on beats
-      const beatScale = 1 + beatIntensity * 0.3;
-      meshRef.current.scale.setScalar(beatScale);
+
+      const audioRotationFactor = 1 + smoothedLevelRef.current * audioReactivity;
+      const beatRotationBoost = 1 + smoothedBeatRef.current * 2.2; 
+      meshRef.current.rotation.y += 0.0045 * rotationSpeed * audioRotationFactor * beatRotationBoost;
+      meshRef.current.rotation.z += 0.0018 * rotationSpeed * audioRotationFactor * beatRotationBoost;
+
+      const targetScale = 1 + smoothedBeatRef.current * 0.25 + smoothedLevelRef.current * 0.05;
+      const currentScale = meshRef.current.scale.x;
+      const scaleLerp = 1.0 - Math.pow(0.002, delta);
+      const newScale = currentScale + (targetScale - currentScale) * scaleLerp;
+      meshRef.current.scale.setScalar(newScale);
     }
-    
+
     if (glowRef.current && glowMaterial.uniforms) {
       glowMaterial.uniforms.time.value = clockRef.current;
-      glowMaterial.uniforms.audioLevel.value = audioLevel;
-      glowMaterial.uniforms.beatIntensity.value = beatIntensity;
-      
-      // Scale glow mesh on beats
-      const glowBeatScale = 1 + beatIntensity * 0.2;
-      glowRef.current.scale.setScalar(glowBeatScale);
+      glowMaterial.uniforms.audioLevel.value = smoothedLevelRef.current;
+      glowMaterial.uniforms.beatIntensity.value = smoothedBeatRef.current;
+
+      const targetGlowScale = 1 + smoothedBeatRef.current * 0.18 + smoothedLevelRef.current * 0.04;
+      const currentGlowScale = glowRef.current.scale.x;
+      const scaleLerpG = 1.0 - Math.pow(0.0025, delta);
+      const newGlowScale = currentGlowScale + (targetGlowScale - currentGlowScale) * scaleLerpG;
+      glowRef.current.scale.setScalar(newGlowScale);
     }
   });
 

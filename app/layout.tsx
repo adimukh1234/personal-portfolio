@@ -3,6 +3,7 @@ import "@/app/globals.css"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SciFiNavbarWrapper } from "@/components/SciFiNavbarWrapper"
+import { AudioProvider } from "@/components/AudioContext"
 import Footer from "@/components/footer"
 import type { Metadata } from "next"
 
@@ -39,18 +40,22 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange forcedTheme="dark">
-          {/* Global Sci-Fi Navbar */}
-          <div className="fixed top-5 left-5 right-5 z-50 pointer-events-none">
-            <div className="pointer-events-auto">
-              <SciFiNavbarWrapper />
+          <AudioProvider>
+            {/* Global Sci-Fi Navbar */}
+            <div className="fixed top-5 left-5 right-5 z-50 pointer-events-none">
+              <div className="pointer-events-auto">
+                <SciFiNavbarWrapper />
+              </div>
             </div>
-          </div>
-          
-          {/* Main Content */}
-          {children}
-          
-          {/* Global Footer */}
-          <Footer />
+            
+            {/* Main Content */}
+            {children}
+            
+            {/* Global Footer */}
+            <Footer />
+            
+            {/* Custom Cursor removed */}
+          </AudioProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, Phone, Github, Linkedin, ExternalLink, Terminal, Wifi } from "lucide-react"
+import { Mail, Phone, Github, Linkedin, Terminal, Instagram } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function Contact() {
@@ -31,12 +31,18 @@ export default function Contact() {
       value: "Aditya Mukherjee",
       href: "https://www.linkedin.com/in/adityamukherjee100/",
     },
+    {
+      icon: <Instagram className="h-6 w-6 text-[#ff4e42]" />,
+      title: "INSTAGRAM",
+      value: "@mainlyy.aditya",
+      href: "https://www.instagram.com/mainlyy.aditya/",
+    },
   ]
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-[#12100f] text-[#ffffff] relative overflow-hidden">
+    <section id="contact" className="relative py-20 sm:py-24 md:py-28 max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 bg-[#12100f] text-[#ffffff] overflow-hidden">
       {/* Grid Overlay */}
-      <div className="absolute inset-0 opacity-5"
+      <div className="absolute inset-0 opacity-5 pointer-events-none"
            style={{
              backgroundImage: `
                linear-gradient(to right, rgba(255, 78, 66, 0.1) 1px, transparent 1px),
@@ -45,89 +51,64 @@ export default function Contact() {
              backgroundSize: '40px 40px'
            }} />
 
-      <div className="container px-4 mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto text-center mb-20"
-        >
-          {/* Terminal-style header */}
-          <div className="bg-[rgba(0,0,0,0.3)] border border-[rgba(255,78,66,0.3)] p-4 rounded-none mb-8 font-mono text-left max-w-md mx-auto backdrop-blur-sm">
-            <div className="flex items-center mb-2">
-              <Wifi className="h-4 w-4 text-[#ff4e42] mr-2" />
-              <span className="text-[#ff4e42]">CONTACT.INIT</span>
-            </div>
-            <div className="text-[#c2b8b2] text-sm">
-              <span className="text-[#ff4e42]">$</span> ping aditya.dev<br />
-              <span className="text-[#ffffff]">ONLINE</span>
-            </div>
-          </div>
-
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 uppercase font-mono text-[#ff4e42]">
-            ESTABLISH CONNECTION
-          </h2>
-          <div className="h-px w-20 bg-[#ff4e42] mx-auto mb-8"></div>
-          <p className="text-sm text-[#c2b8b2] max-w-2xl mx-auto font-mono">
-            &gt; Have a project in mind or want to chat?<br />
-            &gt; Always open to discussing new projects and creative ideas<br />
-            &gt; Status: <span className="text-[#ff4e42]">ACCEPTING CONNECTIONS</span>
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
-          {contactInfo.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-            >
-              <Card className="h-full overflow-hidden group hover:shadow-lg transition-all duration-300 bg-[rgba(0,0,0,0.3)] border-2 border-[rgba(255,78,66,0.3)] hover:border-[rgba(255,78,66,0.6)] backdrop-blur-sm rounded-none">
-                <CardContent className="p-0">
-                  <div className="bg-[rgba(255,78,66,0.1)] group-hover:bg-[rgba(255,78,66,0.2)] transition-colors p-4 sm:p-6 flex items-center justify-center">
-                    <div className="bg-[rgba(0,0,0,0.5)] rounded-none p-3 sm:p-4 border border-[rgba(255,78,66,0.3)]">
-                      {item.icon}
-                    </div>
-                  </div>
-                  <div className="p-4 sm:p-6 text-center">
-                    <h3 className="font-semibold text-base sm:text-lg mb-2 text-[#ff4e42] font-mono">{item.title}</h3>
-                    <a
-                      href={item.href}
-                      className="text-sm text-[#c2b8b2] group-hover:text-[#ff4e42] transition-colors flex items-center justify-center gap-2 font-mono"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {item.value}
-                      <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-16 text-center"
-        >
-          <Button 
-            size="lg" 
-            className="rounded-none px-8 py-6 text-lg font-medium bg-[rgba(255,78,66,0.8)] hover:bg-[rgba(255,78,66,1)] border-2 border-[#ff4e42] text-[#ffffff] uppercase font-mono"
-            asChild
-          >
-            <a href="mailto:adimukherjee100@gmail.com">
-              INITIATE COLLABORATION
-            </a>
-          </Button>
-        </motion.div>
+      <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
+        <h2 className="text-[#ff4e42] font-mono font-bold uppercase tracking-tight text-[clamp(1.75rem,4.2vw,2.5rem)] mb-5">
+          SIGNAL LINK
+        </h2>
+        <p className="text-[#c2b8b2] font-mono text-[clamp(0.8rem,1.9vw,0.95rem)] leading-relaxed">
+          &gt; Reach out for collaboration, consulting, or open-source builds<br />
+          &gt; Always exploring new problem spaces
+        </p>
       </div>
+
+      <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 max-w-3xl mx-auto">
+        {contactInfo.map((method) => {
+          const isExternal = method.href.startsWith('http');
+          return (
+            <a
+              key={method.title}
+              href={method.href}
+              {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              aria-label={`${method.title}: ${method.value}`}
+              title={`${method.title}: ${method.value}`}
+              className="group flex items-center gap-5 rounded-xl border border-[#312b29]/60 bg-[#141212]/60 hover:bg-[#1b1818]/80 p-5 sm:p-6 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#12100f] focus-visible:ring-[#ff4e42]/60"
+            >
+              <div className="w-12 h-12 min-w-12 rounded-lg bg-[#ff4e42]/10 flex items-center justify-center text-[#ff4e42] group-hover:bg-[#ff4e42]/15 transition-colors">
+                {method.icon}
+              </div>
+              <div className="flex-1">
+                <h3 className="text-[clamp(1rem,2.4vw,1.15rem)] font-semibold text-white mb-1 tracking-tight">
+                  {method.title}
+                </h3>
+                <p className="text-[clamp(0.8rem,1.75vw,0.9rem)] text-[#c2b8b2] font-mono line-clamp-2">
+                  {method.value}
+                </p>
+              </div>
+              <span className="text-[#ff4e42] opacity-0 group-hover:opacity-100 text-sm font-mono transition-opacity hidden sm:inline-block">
+                {'>>'}
+              </span>
+            </a>
+          )
+        })}
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="mt-16 text-center"
+      >
+        <Button 
+          size="lg" 
+          className="rounded-none px-8 py-6 text-lg font-medium bg-[rgba(255,78,66,0.8)] hover:bg-[rgba(255,78,66,1)] border-2 border-[#ff4e42] text-[#ffffff] uppercase font-mono"
+          asChild
+        >
+          <a href="mailto:adimukherjee100@gmail.com">
+            INITIATE COLLABORATION
+          </a>
+        </Button>
+      </motion.div>
 
       {/* Sci-fi decorative elements */}
       <div className="absolute top-1/4 left-0 w-20 h-px bg-gradient-to-r from-[#ff4e42] to-transparent" />

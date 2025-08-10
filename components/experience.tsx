@@ -18,15 +18,40 @@ interface ExperienceItem {
 export default function Experience() {
   const experiences: ExperienceItem[] = [
     {
+      title: "Webmaster",
+      company: "Randomize MUJ",
+      location: "Manipal University Jaipur, India",
+      period: "June 2025 - Present",
+      description: [
+        "Developing full-stack applications using MERN stack",
+        "Collaborating with cross-functional teams on software projects",
+        "Implementing responsive UI designs and optimizing performance"
+      ],
+      skills: ["JavaScript", "React", "Node.js", "MongoDB", "Express"],
+      current: true,
+    },
+    {
+      title: "Web Dev- Team Head",
+      company: "MUJ ACM",
+      location: "Jaipur, India",
+      period: "June 2025 - Present",
+      description: [
+        "Leading web development initiatives",
+      ],
+      skills: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+      current: true,
+      
+    },
+    {
       title: "Web Developer Intern",
       company: "BuzzBites Media & Entertainment",
       location: "Kolkata, India",
-      period: "May 2025 - Present",
+      period: "May 2025 - Aug 2025",
       description: [
         "Exploring web technologies and frameworks",
       ],
       skills: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
-      current: true,
+      
     },
     {
       title: "Junior Working Team- TECH",
@@ -43,7 +68,7 @@ export default function Experience() {
   ]
 
   return (
-    <section id="experience" className="py-24 bg-[#12100f] text-[#ffffff] relative overflow-hidden">
+    <section id="experience" className="relative py-20 sm:py-24 md:py-28 max-w-6xl mx-auto px-5 sm:px-8 lg:px-12">
       {/* Grid Overlay */}
       <div className="absolute inset-0 opacity-5"
            style={{
@@ -74,7 +99,7 @@ export default function Experience() {
             </div>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 uppercase font-mono text-[#ff4e42]">
+          <h2 className="text-[#ff4e42] font-mono font-bold uppercase tracking-tight text-[clamp(1.65rem,4vw,2.5rem)] mb-5">
             WORK HISTORY
           </h2>
           <div className="h-px w-20 bg-[#ff4e42] mx-auto mb-8"></div>

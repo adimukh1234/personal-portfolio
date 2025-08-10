@@ -1,112 +1,138 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 interface SciFiNavbarProps {
   timestamp: string;
 }
 
 export function SciFiNavbar({ timestamp }: SciFiNavbarProps) {
+  const sections = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'contact', label: 'Contact' }
+  ];
+
+  const [active, setActive] = useState('home');
+  const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Scrollspy logic
+  const handleScroll = useCallback(() => {
+    const scrollPos = window.scrollY + window.innerHeight * 0.3; // bias toward upcoming section
+    let current = 'home';
+    for (const s of sections) {
+      const el = document.getElementById(s.id);
+      if (el) {
+        const top = el.offsetTop;
+        if (scrollPos >= top) current = s.id;
+      }
+    }
+    setActive(current);
+    setScrolled(window.scrollY > 12);
+  }, [sections]);
+
+  useEffect(() => {
+    setMounted(true);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [handleScroll]);
+
+  const scrollTo = (id: string) => {
+    if (id === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
+    else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <nav className="relative navbar-boot">
-      {/* Main navbar container */}
-      <div className="flex justify-between items-center bg-gradient-to-r from-[rgba(18,16,15,0.9)] via-[rgba(30,26,24,0.9)] to-[rgba(18,16,15,0.9)] backdrop-blur-lg border border-[rgba(255,78,66,0.3)] rounded-lg overflow-hidden shadow-2xl shadow-[rgba(255,78,66,0.1)] hologram-effect">
-        
-        {/* Left section - Logo/Brand */}
-        <div className="flex items-center px-6 py-4 border-r border-[rgba(255,78,66,0.2)]">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-2 sm:px-4 ${
+        scrolled ? 'backdrop-blur-xl bg-[#0f0d0c]/70 border-b border-[#ff4e42]/20 shadow-[0_4px_20px_-4px_rgba(255,78,66,0.25)]' : 'bg-transparent'
+      }`}
+      role="navigation"
+      aria-label="Primary"
+    >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-full flex justify-center overflow-hidden">
+        <div className={`w-[680px] h-[680px] rounded-full bg-radial from-[#ff4e42]/7 via-transparent to-transparent blur-3xl translate-y-[-60%] transition-opacity duration-700 ${scrolled ? 'opacity-40' : 'opacity-0'} pointer-events-none`} />
+      </div>
+      <div className="max-w-7xl mx-auto flex items-center gap-3 sm:gap-4 py-2 sm:py-3 relative">
+        {/* Brand */}
+        <button
+          onClick={() => scrollTo('home')}
+            className="group flex items-center gap-2 pr-2 sm:pr-4 border-r border-white/10"
+            aria-label="Scroll to top"
+        >
           <div className="relative">
-            {/* Animated logo container */}
-            <div className="w-10 h-10 border-2 border-[#ff4e42] rounded-sm flex items-center justify-center mr-4 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#ff4e42] to-[#c2362f] opacity-20"></div>
-              <div className="text-[#ff4e42] font-bold text-lg z-10">AM</div>
-              {/* Scanning line animation */}
-              <div className="absolute top-0 left-0 w-full h-0.5 bg-[#ff4e42] opacity-60 navbar-scan-line"></div>
+            <div className="w-8 h-8 sm:w-9 sm:h-9 border border-[#ff4e42]/50 rounded-lg flex items-center justify-center overflow-hidden shadow-inner shadow-black/40 group-hover:border-[#ff4e42] transition-colors">
+              <span className="text-[#ff4e42] font-bold text-sm">AM</span>
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#ff4e42] to-transparent opacity-60 animate-pulse" />
             </div>
           </div>
-          <div className="text-left">
-            <div className="text-[#ff4e42] font-bold text-sm uppercase tracking-[0.15em] leading-tight">
-              ADITYA.MUKHERJEE
-            </div>
-            <div className="text-[#c2b8b2] text-xs uppercase tracking-wider font-medium">
-              FULL.STACK.DEV
-            </div>
+          <div className="hidden xs:flex flex-col leading-none text-left">
+            <span className="text-white font-semibold text-[11px] sm:text-xs tracking-wide">Aditya&nbsp;Mukherjee</span>
+            <span className="text-gray-400 text-[9px] sm:text-[10px] font-mono">Full Stack Dev</span>
           </div>
-        </div>
+        </button>
 
-        {/* Center section - Navigation Links */}
-        <div className="flex-1 flex justify-center items-center px-4">
-          <div className="flex items-center space-x-1 bg-[rgba(0,0,0,0.3)] rounded-md border border-[rgba(255,78,66,0.15)] p-1">
-            {[
-              { label: 'HOME', id: 'home', active: true },
-              { label: 'ABOUT', id: 'about' },
-              { label: 'PROJECTS', id: 'projects' },
-              { label: 'CONTACT', id: 'contact' }
-            ].map((item, index) => (
-              <button
-                key={item.id}
-                className={`nav-button px-4 py-2 text-xs font-medium uppercase tracking-wider transition-all duration-300 rounded-sm pointer-events-auto ${
-                  item.active 
-                    ? 'bg-[rgba(255,78,66,0.2)] text-[#ff4e42] border border-[rgba(255,78,66,0.3)] shadow-md shadow-[rgba(255,78,66,0.2)]' 
-                    : 'text-[#c2b8b2] hover:text-[#ff4e42] hover:bg-[rgba(255,78,66,0.1)] hover:shadow-sm hover:shadow-[rgba(255,78,66,0.1)]'
-                }`}
-                onClick={() => {
-                  if (item.id === 'home') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  } else {
-                    const section = document.getElementById(item.id === 'home' ? 'portfolio-sections' : item.id);
-                    if (section) {
-                      section.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }
+        {/* Nav items container */}
+        <div className="flex-1 min-w-0">
+          <div className="relative">
+            <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-[#ff4e42]/30 scrollbar-track-transparent gap-1 sm:gap-2 px-1 py-1 bg-white/5 border border-white/10 rounded-xl backdrop-blur-sm">
+              {sections.map(s => {
+                const isActive = s.id === active;
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => scrollTo(s.id)}
+                    className={`relative px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-sm font-medium rounded-md transition-all outline-none focus-visible:ring-2 focus-visible:ring-[#ff4e42]/60 min-h-[36px] tracking-wide ${
+                      isActive
+                        ? 'text-white bg-[#ff4e42] shadow shadow-[#ff4e42]/30'
+                        : 'text-gray-300 hover:text-white hover:bg-white/10'
+                    }`}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    <span className="relative z-10 flex items-center gap-1">
+                      {isActive && (
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-white shadow shadow-white/60 animate-pulse" />
+                      )}
+                      {s.label}
+                    </span>
+                    {!isActive && (
+                      <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-[#ff4e42]/0 via-[#ff4e42]/10 to-[#ff4e42]/0" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            {/* Animated underline bar */}
+            {mounted && (
+              <div
+                className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[#ff4e42] via-[#ff947f] to-[#ff4e42] rounded-full transition-all duration-500"
+                style={{
+                  width: `${100 / sections.length}%`,
+                  transform: `translateX(${sections.findIndex(s => s.id === active) * 100}%)`
                 }}
-              >
-                {item.label}
-              </button>
-            ))}
+              />
+            )}
           </div>
         </div>
 
-        {/* Right section - System Status & Time */}
-        <div className="flex items-center px-6 py-4 border-l border-[rgba(255,78,66,0.2)]">
-          <div className="text-right mr-4">
-            <div className="flex items-center text-xs text-[#c2b8b2] mb-1">
-              <div className="w-2 h-2 bg-[#ff4e42] rounded-full mr-2 status-indicator"></div>
-              <span className="uppercase tracking-wide">SYSTEM ONLINE</span>
-            </div>
-            <div className="text-[#ff4e42] font-mono text-sm font-bold">
-              {timestamp}
-            </div>
+        {/* Right status cluster */}
+        <div className="flex items-center gap-3 pl-2 sm:pl-4">
+          <div className="hidden md:flex flex-col text-right leading-tight pr-2">
+            <span className="text-[10px] text-gray-400 font-mono tracking-widest">STATUS</span>
+            <span className="text-[11px] text-[#ff4e42] font-mono">ONLINE</span>
           </div>
-          
-          {/* Status indicators */}
-          <div className="flex flex-col space-y-1">
-            <div className="flex items-center text-xs">
-              <div className="w-1.5 h-1.5 bg-green-400 rounded-full mr-2 status-indicator"></div>
-              <span className="text-[#c2b8b2] text-[10px] uppercase tracking-wide">AUDIO</span>
-            </div>
-            <div className="flex items-center text-xs">
-              <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2 status-indicator"></div>
-              <span className="text-[#c2b8b2] text-[10px] uppercase tracking-wide">3D.SYS</span>
-            </div>
-            <div className="flex items-center text-xs">
-              <div className="w-1.5 h-1.5 bg-[#ff4e42] rounded-full mr-2 status-indicator"></div>
-              <span className="text-[#c2b8b2] text-[10px] uppercase tracking-wide">NEURAL</span>
-            </div>
+          <div className="relative">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#ff4e42] shadow-[0_0_8px_2px_rgba(255,78,66,0.55)] animate-pulse" />
+            <div className="absolute inset-0 rounded-full animate-ping bg-[#ff4e42]/30" />
           </div>
         </div>
-      </div>
-
-      {/* Decorative elements */}
-      <div className="absolute -top-1 left-4 w-8 h-0.5 bg-gradient-to-r from-transparent via-[#ff4e42] to-transparent opacity-60"></div>
-      <div className="absolute -top-1 right-4 w-8 h-0.5 bg-gradient-to-r from-transparent via-[#ff4e42] to-transparent opacity-60"></div>
-      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-[#ff4e42] to-transparent opacity-40"></div>
-      
-      {/* Tech stack indicator */}
-      <div className="absolute -bottom-6 left-0 text-[#ff4e42] text-[10px] font-mono uppercase tracking-wider opacity-60">
-        NEXT.JS • REACT • THREE.JS • GSAP
-      </div>
-      <div className="absolute -bottom-6 right-0 text-[#c2b8b2] text-[10px] font-mono uppercase tracking-wider opacity-60">
-        BUILD.v2024.7.3
       </div>
     </nav>
   );

@@ -166,25 +166,36 @@ export function SpectrumAnalyzer({
 
   // Initialize the song
   useEffect(() => {
-    if (audioContext && !audioElement) {
+    if (!audioContext || audioElement) return;
+    // Avoid creating duplicate global audio if already created elsewhere (e.g., mobile in SciFiLanding)
+    if (typeof window !== 'undefined' && (window as any).__GLOBAL_AUDIO_CREATED) return;
+
+    const audioPath = '/song.mp3';
+    // Check if file exists by attempting fetch HEAD
+    fetch(audioPath, { method: 'HEAD' }).then(res => {
+      if (!res.ok) {
+        onNotification('AUDIO FILE MISSING');
+        return;
+      }
       const audio = new Audio();
-      audio.src = '/song.mp3';
+      audio.src = audioPath;
       audio.loop = true;
       audio.crossOrigin = 'anonymous';
-      
       try {
         const source = audioContext.createMediaElementSource(audio);
         if (audioAnalyser) {
           source.connect(audioAnalyser);
         }
-        
+        (window as any).__GLOBAL_AUDIO_CREATED = true;
         setAudioElement(audio);
         onNotification('SONG LOADED - READY TO PLAY');
       } catch (error) {
         console.error('Error setting up audio source:', error);
         onNotification('AUDIO SETUP ERROR');
       }
-    }
+    }).catch(() => {
+      onNotification('AUDIO CHECK FAILED');
+    });
   }, [audioContext, audioAnalyser, audioElement, onNotification]);
 
   const togglePlayPause = () => {
@@ -256,30 +267,6 @@ export function SpectrumAnalyzer({
             </button>
           </div>
         </div>
-
-        {/* Song Info */}
-        <div>
-          <div className="px-2 py-1 bg-[rgba(0,0,0,0.2)] text-[#ff4e42] text-xs rounded-sm flex justify-between items-center">
-            <span>SONG.MP3 {isPlaying ? '- PLAYING' : '- PAUSED'}</span>
-            <span className="text-[#c2b8b2]">
-              BEAT: {beatDetected ? '●' : '○'}
-            </span>
-          </div>
-        </div>
-
-        {/* Audio Player */}
-        {audioElement && (
-          <audio 
-            controls 
-            className="w-full h-8"
-            style={{ 
-              filter: 'invert(1) sepia(1) saturate(5) hue-rotate(315deg)',
-              fontSize: '12px'
-            }}
-          >
-            <source src={audioElement.src} />
-          </audio>
-        )}
 
         {/* Sensitivity Control */}
         <div>

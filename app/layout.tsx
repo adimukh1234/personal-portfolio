@@ -6,6 +6,7 @@ import { SciFiNavbarWrapper } from "@/components/SciFiNavbarWrapper"
 import { AudioProvider } from "@/components/AudioContext"
 import Footer from "@/components/footer"
 import type { Metadata } from "next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -53,6 +54,9 @@ export default function RootLayout({
             
             {/* Global Footer */}
             <Footer />
+            
+            {/* Vercel Speed Insights */}
+            <SpeedInsights />
             
             {/* Custom Cursor removed */}
           </AudioProvider>
